@@ -2,19 +2,24 @@
   <div class="container page">
     <div class="row">
       <div class="col-md-10 col-md-offset-1 col-xs-12">
-        <form>
+        <form [formGroup]="post" (ngSubmit)="createPost()">
           <fieldset class="form-group">
             <input
               class="form-control form-control-lg"
               type="text"
               placeholder="Post Title"
+              formControlName ="title"
             />
           </fieldset>
+          <ul *ngIf="title.dirty && title.invalid">
+            <li *ngIf="title.errors.required">請輸入標題</li>
+          </ul>
           <fieldset class="form-group">
             <textarea
               class="form-control"
               rows="3"
               placeholder="Description"
+              formControlName="description"
             ></textarea>
           </fieldset>
           <fieldset class="form-group">
@@ -22,23 +27,60 @@
               class="form-control"
               rows="8"
               placeholder="Post body"
+              formControlName="body"
             ></textarea>
           </fieldset>
+          <ul *ngIf="body.dirty && body.invalid">
+            <li *ngIf="body.errors.required">請輸入內文</li>
+            <li *ngIf="body.errors.minlength">
+              內文至少 {{ body.errors.minlength.requiredLength }} 個字
+            </li>
+          </ul>
+          <!-- <ul *ngIf="mPassword.invalid">
+            <li *ngIf="mPassword.errors.required">請輸入密碼</li>
+            <li *ngIf="mPassword.errors.minlength">
+              密碼長度必須大於
+              {{ mPassword.errors.minlength.requiredLength }} 個字元
+            </li>
+          </ul> -->
           <fieldset class="form-group">
-            <input class="form-control" type="text" placeholder="Enter tags" />
+            <input
+            class="form-control"
+            type="text"
+            placeholder="Enter tags"
+            #tag
+            (keyup.enter)="addTag(tag.value); tag.value = ''"
+            (keydown.enter)="$event.preventDefault()"/>
+            <!-- 使用 formArrayName 把標籤區塊範圍變成 tags 的 formArray -->
+            <!-- 再使用 index 與 formControlName 綁在一起 -->
+            <!-- <ng-container formArrayName="tags">
+              <input
+                *ngFor="let tag of form.get('tags').value; let index=index"
+                [formControlName]="index"
+                class="form-control"
+                type="text"
+                placeholder="Enter tags" />
+            </ng-container> -->
+
+            <!-- 取得 controls 陣列並綁在 input 上-->
+            <!-- <input
+              *ngFor="let control of getTagsControl()"
+              [formControl]="control"
+              class="form-control"
+              type="text"
+              placeholder="Enter tags" /> -->
             <div class="tag-list">
-              <span class="label label-pill label-default">
-                <i class="ion-close-round"></i> programming</span
-              >
-              <span class="label label-pill label-default">
-                <i class="ion-close-round"></i> javascript</span
-              >
-              <span class="label label-pill label-default">
-                <i class="ion-close-round"></i> webdev</span
-              >
+              <span class="label label-pill label-default" *ngFor="let tag of post.get('tags').value; let index = index">
+                <i class="ion-close-round" (click)="removeTag(index)"></i>
+                {{tag}}
+              </span>
             </div>
           </fieldset>
-          <button type="submit" class="btn btn-lg btn-primary pull-xs-right">
+          <button
+            type="submit"
+            class="btn btn-lg btn-primary pull-xs-right"
+            (click)="send()"
+            [disabled]="post.invalid">
             Create Post
           </button>
         </form>
