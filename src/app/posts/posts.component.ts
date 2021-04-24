@@ -1,3 +1,7 @@
+import { map } from 'rxjs/operators';
+import { PostService } from './../post.service';
+import { Article } from './../interfaces/article';
+import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +11,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PostsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private postService: PostService) { }
+
+  articles$: Observable<Article[]>;
 
   ngOnInit(): void {
+    this.articles$ = this.postService.getArticles()
+      .pipe(
+        map(result => result.articles)
+      );
   }
 
 }
