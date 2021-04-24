@@ -17,10 +17,14 @@ export class CreateComponent implements OnInit {
   //   ])
   // });
 
+  bodyValidator = Validators.compose([
+    Validators.required, Validators.minLength(10)
+  ]);
+
   post = this.formBuilder.group({
     title: this.formBuilder.control('', Validators.required),
     description: this.formBuilder.control(''),
-    body: this.formBuilder.control('', [Validators.required, Validators.minLength(10)]),
+    body: this.formBuilder.control('', this.bodyValidator),
     tags: this.formBuilder.array([
       this.formBuilder.control('Angular'),
       this.formBuilder.control('HTML'),

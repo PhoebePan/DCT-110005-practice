@@ -30,19 +30,12 @@
               formControlName="body"
             ></textarea>
           </fieldset>
-          <ul *ngIf="body.dirty && body.invalid">
-            <li *ngIf="body.errors.required">請輸入內文</li>
-            <li *ngIf="body.errors.minlength">
-              內文至少 {{ body.errors.minlength.requiredLength }} 個字
+          <ul *ngIf="post.get('body').dirty && post.get('body').invalid">
+            <li *ngIf="post.get('body').errors.required">請輸入內文</li>
+            <li *ngIf="post.get('body').errors.minlength">
+              內文至少 {{ post.get('body').errors.minlength.requiredLength }} 個字
             </li>
           </ul>
-          <!-- <ul *ngIf="mPassword.invalid">
-            <li *ngIf="mPassword.errors.required">請輸入密碼</li>
-            <li *ngIf="mPassword.errors.minlength">
-              密碼長度必須大於
-              {{ mPassword.errors.minlength.requiredLength }} 個字元
-            </li>
-          </ul> -->
           <fieldset class="form-group">
             <input
             class="form-control"
