@@ -7,12 +7,12 @@
 
         <form>
           <fieldset class="form-group">
-            <input name="email" class="form-control form-control-lg" type="text" placeholder="Email">
+            <input [(ngModel)]="user.email" name="email" class="form-control form-control-lg" type="text" placeholder="Email">
           </fieldset>
           <fieldset class="form-group">
-            <input name="password" class="form-control form-control-lg" type="password" placeholder="Password">
+            <input [(ngModel)]="user.password" name="password" class="form-control form-control-lg" type="password" placeholder="Password">
           </fieldset>
-          <button class="btn btn-lg btn-primary pull-xs-right">
+          <button class="btn btn-lg btn-primary pull-xs-right" (click)="login()">
             Sign in
           </button>
         </form>
